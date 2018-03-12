@@ -15,7 +15,7 @@ import android.view.View;
  * @desc: ${TODO}
  */
 
-public class WaveView extends View {
+public class ChartWaveView extends View {
 
     private static final String TAG = "WaveView";
     private Paint mWavePaint;
@@ -34,15 +34,15 @@ public class WaveView extends View {
     private float mHalfWaveWidth = 0;
 
 
-    public WaveView(Context context) {
+    public ChartWaveView(Context context) {
         this(context, null);
     }
 
-    public WaveView(Context context, AttributeSet attrs) {
+    public ChartWaveView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public WaveView(Context context, AttributeSet attrs, int defStyle) {
+    public ChartWaveView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs);
     }
