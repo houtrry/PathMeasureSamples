@@ -1,9 +1,10 @@
 package com.houtrry.pathmeasuresamples.component.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.houtrry.pathmeasuresamples.R;
+import com.houtrry.pathmeasuresamples.component.widget.ChartWaveView;
 
 /**
  * @author houtrry
@@ -15,5 +16,8 @@ public class ChartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
+
+        ChartWaveView chartWaveView = (ChartWaveView) findViewById(R.id.chartWaveView);
+        chartWaveView.startAnimator();
     }
 }

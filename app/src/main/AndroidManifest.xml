@@ -20,6 +20,8 @@
         </activity>
         <activity android:name=".component.activity.ChartActivity">
         </activity>
+        <activity android:name=".component.activity.TextActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -1,13 +1,17 @@
 package com.houtrry.pathmeasuresamples.component.widget;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.support.annotation.FloatRange;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 
 /**
  * @author: houtrry
@@ -22,7 +26,9 @@ public class WaveView extends View {
     private Path mWavePath = new Path();
     private int mWidth;
     private int mHeight;
-    private float waveHorizontalProgress = 0;
+    private
+    @FloatRange(from = 0.0f, to = 1.0f)
+    float waveHorizontalProgress = 0.5001f;
 
     private float mWaveWidth = 60;
     private float mWaveHeight = 100;
@@ -58,7 +64,7 @@ public class WaveView extends View {
         mWidth = w;
         mHeight = h;
         mHalfWaveWidth = mWaveWidth * 0.5f;
-        mWaveCount = Double.valueOf(Math.ceil((mWidth - mOffsetX) / mWaveWidth *1.0d )).intValue();
+        mWaveCount = Double.valueOf(Math.ceil(mWidth / mWaveWidth * 1.0d)).intValue();
     }
 
     @Override
@@ -94,16 +100,79 @@ public class WaveView extends View {
         canvas.drawPath(mWavePath, mWavePaint);
     }
 
+    private float mCurrentX = 0;
+    private float mCurrentY = 0;
+    private float mStartY = 0;
+
+
     private void calculateWavePath() {
-        mOffsetX = waveHorizontalProgress * mWaveWidth * -1;
+        mOffsetX = waveHorizontalProgress * mWaveWidth * 2;
         mWavePath.reset();
         mWavePath.moveTo(mOffsetX, mOffsetY);
-        Log.d(TAG, "calculateWavePath: mOffsetX: "+mOffsetX+", mOffsetY: "+mOffsetY+", mWaveCount: "+mWaveCount);
-        for (int i = 0; i < mWaveCount; i++) {
-            mWavePath.rQuadTo(mHalfWaveWidth, (i % 2 == 0?1:-1)*mWaveHeight, mWaveWidth, 0);
+
+
+        mCurrentX = 0;
+        mStartY = mCurrentY = (float) (mWaveHeight * Math.sin(mOffsetX / mWaveWidth * Math.PI)) + mOffsetY;
+
+        mWavePath.moveTo(mCurrentX, mCurrentY);
+
+        float controlX = 0;
+        float controlY = 0;
+        boolean hasRunHalf = waveHorizontalProgress > 0.5f;
+        if (hasRunHalf) {
+            controlX = mOffsetX - mHalfWaveWidth * 3;
+            controlY = mOffsetY - mWaveHeight;
+        } else {
+            controlX = mOffsetX - mHalfWaveWidth;
+            controlY = mOffsetY + mWaveHeight;
         }
-        mWavePath.lineTo(mOffsetX + mWidth, mHeight);
-        mWavePath.lineTo(mOffsetX, mHeight);
-        mWavePath.lineTo(mOffsetX, mOffsetY);
+        mWavePath.quadTo(controlX, controlY, mOffsetX, mOffsetY);
+
+//        waveHorizontalProgress:0.5,  mOffsetX: 60.0,      mOffsetY: 150.0, controlX: 30.0,      controlY: 250.0, mCurrentX: 0.0 mCurrentY: 150.0
+//        waveHorizontalProgress:0.51, mOffsetX: 61.199997, mOffsetY: 150.0, controlX: 16.199997, controlY: 50.0,  mCurrentX: 0.0 mCurrentY: 143.72095
+
+//        waveHorizontalProgress:0.51, mOffsetX: 61.199997, mOffsetY: 150.0, controlX: -28.800003, controlY: 50.0, mCurrentX: 0.0 mCurrentY: 143.72095
+
+//        waveHorizontalProgress:0.5,  mOffsetX: 60.0,      mOffsetY: 150.0, controlX: 30.0,       controlY: 250.0,mCurrentX: 0.0 mCurrentY: 150.0
+//        waveHorizontalProgress:0.5001, mOffsetX: 60.012,  mOffsetY: 150.0, controlX: -29.987999, controlY: 50.0, mCurrentX: 0.0 mCurrentY: 149.93716
+
+
+
+        Log.d(TAG, "calculateWavePath: waveHorizontalProgress:"+waveHorizontalProgress+", mOffsetX: " + mOffsetX + ", mOffsetY: " + mOffsetY + ", controlX: " + controlX+", controlY: "+controlY+", mCurrentX: "+mCurrentX+" mCurrentY: "+mCurrentY);
+        for (int i = 0; i < mWaveCount; i++) {
+            mCurrentX += mWaveWidth;
+            if (mCurrentX <= mWidth) {
+                mWavePath.rQuadTo(mHalfWaveWidth, (hasRunHalf?1:-1)*(i % 2 == 0?1:-1)*mWaveHeight, mWaveWidth, 0);
+            } else {
+                mWavePath.quadTo(mCurrentX - mHalfWaveWidth, mOffsetY + (hasRunHalf?1:-1)*(i % 2 == 0?1:-1)*mWaveHeight, mWidth,
+                        (float) (mWaveHeight * Math.sin((-mOffsetX + 2 * mWaveWidth + mWidth) / mWaveWidth * Math.PI)));
+            }
+
+        }
+        mWavePath.lineTo(mWidth, mHeight);
+        mWavePath.lineTo(0, mHeight);
+        mWavePath.lineTo(0, mStartY);
+    }
+
+    private float calculateCurrentY(float currentX, float waveHorizontalProgress) {
+
+        if (currentX == 0) {
+            if (waveHorizontalProgress < 0.5f) {
+
+            } else {
+
+            }
+        }
+
+        return 0;
+    }
+
+    public void startWave() {
+        ObjectAnimator waveAnimator = ObjectAnimator.ofFloat(this, "waveHorizontalProgress", 0f, 1f);
+        waveAnimator.setDuration(2000);
+        waveAnimator.setInterpolator(new LinearInterpolator());
+        waveAnimator.setRepeatCount(-1);
+        waveAnimator.setRepeatMode(ValueAnimator.RESTART);
+        waveAnimator.start();
     }
 }

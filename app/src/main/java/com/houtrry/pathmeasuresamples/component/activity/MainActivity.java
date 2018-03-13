@@ -19,9 +19,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         findViewById(R.id.sample_boat).setOnClickListener(this);
         findViewById(R.id.sample_chart).setOnClickListener(this);
+        findViewById(R.id.sample_text).setOnClickListener(this);
+
     }
 
     @Override
@@ -33,6 +34,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             case R.id.sample_chart:{
                 toAty(ChartActivity.class);
+                break;
+            }
+            case R.id.sample_text:{
+                toAty(TextActivity.class);
                 break;
             }
             default:

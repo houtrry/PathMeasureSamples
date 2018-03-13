@@ -1,13 +1,18 @@
 package com.houtrry.pathmeasuresamples.component.widget;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathMeasure;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 
 /**
  * @author: houtrry
@@ -32,6 +37,14 @@ public class ChartWaveView extends View {
 
     private int mWaveCount = 0;
     private float mHalfWaveWidth = 0;
+    private PathMeasure mChartPathMeasure;
+
+    private Path mWaveBezierPath = new Path();
+
+    private float chartProgress = 0;
+
+    private Path mDstPath = new Path();
+    private Paint mChartPaint;
 
 
     public ChartWaveView(Context context) {
@@ -65,7 +78,9 @@ public class ChartWaveView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         calculateWavePath();
+
         drawWave(canvas);
+        drawChart(canvas);
     }
 
     public void setWaveHorizontalProgress(float progress) {
@@ -73,13 +88,23 @@ public class ChartWaveView extends View {
         postInvalidate();
     }
 
+    public void setChartProgress(float chartProgress) {
+        this.chartProgress = chartProgress;
+        ViewCompat.postInvalidateOnAnimation(this);
+    }
+
     private void init(Context context, AttributeSet attrs) {
         initAttrs(context, attrs);
+        initData(context);
         initPaint(context);
     }
 
     private void initAttrs(Context context, AttributeSet attrs) {
 
+    }
+
+    private void initData(Context context) {
+        mChartPathMeasure = new PathMeasure();
     }
 
     private void initPaint(Context context) {
@@ -88,6 +113,11 @@ public class ChartWaveView extends View {
         mWavePaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
 
+        mChartPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mChartPaint.setColor(Color.WHITE);
+        mChartPaint.setStyle(Paint.Style.STROKE);
+        mChartPaint.setStrokeWidth(10);
+        mChartPaint.setStrokeCap(Paint.Cap.ROUND);
     }
 
     private void drawWave(Canvas canvas) {
@@ -95,6 +125,7 @@ public class ChartWaveView extends View {
     }
 
     private void calculateWavePath() {
+        mWaveBezierPath.reset();
         mOffsetX = waveHorizontalProgress * mWaveWidth * -1;
         mWavePath.reset();
         mWavePath.moveTo(mOffsetX, mOffsetY);
@@ -102,8 +133,28 @@ public class ChartWaveView extends View {
         for (int i = 0; i < mWaveCount; i++) {
             mWavePath.rQuadTo(mHalfWaveWidth, (i % 2 == 0?1:-1)*mWaveHeight, mWaveWidth, 0);
         }
+        mWaveBezierPath.set(mWavePath);
         mWavePath.lineTo(mOffsetX + mWidth, mHeight);
         mWavePath.lineTo(mOffsetX, mHeight);
         mWavePath.lineTo(mOffsetX, mOffsetY);
+    }
+
+
+    private void drawChart(Canvas canvas) {
+        mChartPathMeasure.setPath(mWaveBezierPath, false);
+
+        mDstPath.reset();
+        mChartPathMeasure.getSegment(mChartPathMeasure.getLength()*chartProgress, mChartPathMeasure.getLength()*chartProgress + 30, mDstPath, true);
+        canvas.drawPath(mDstPath, mChartPaint);
+    }
+
+
+    public void startAnimator() {
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(this, "chartProgress", 0.0f, 1.0f);
+        objectAnimator.setDuration(6000);
+        objectAnimator.setRepeatMode(ValueAnimator.RESTART);
+        objectAnimator.setRepeatCount(-1);
+        objectAnimator.setInterpolator(new LinearInterpolator());
+        objectAnimator.start();
     }
 }

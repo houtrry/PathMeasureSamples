@@ -5,18 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.houtrry.pathmeasuresamples.component.activity.ChartActivity">
+    tools:context="com.houtrry.pathmeasuresamples.component.activity.TextActivity">
 
-
-    <com.houtrry.pathmeasuresamples.component.widget.ChartWaveView
-        android:id="@+id/chartWaveView"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
+    <com.houtrry.pathmeasuresamples.component.widget.TextPathView
+        android:id="@+id/textPathView"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:background="@android:color/holo_blue_light"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@color/colorAccent"
         />
 
 </android.support.constraint.ConstraintLayout>

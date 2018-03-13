@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
     tools:context="com.houtrry.pathmeasuresamples.component.activity.MainActivity">
 
     <Button
@@ -22,9 +23,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="图表"
+        app:layout_constraintBottom_toTopOf="@+id/sample_text"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sample_boat"/>
+
+    <Button
+        android:id="@+id/sample_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="文字"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sample_boat"/>
+
 
 </android.support.constraint.ConstraintLayout>
