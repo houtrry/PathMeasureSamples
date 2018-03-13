@@ -26,7 +26,8 @@ public class TextPathView extends View {
     private float progress = 0;
 
     private int mTextColor = Color.RED;
-    private float mTextSize = 60;
+    private float mTextSize = 90;
+    private float mTextStrokeWidth = 3;
     private Paint mTextPaint;
 
     private Path mTextPath = new Path();
@@ -35,6 +36,7 @@ public class TextPathView extends View {
     private PathMeasure mTextPathMeasure = new PathMeasure();
 
     private float mTextLengthSum = 0;
+    private float mStop;
 
     public TextPathView(Context context) {
         this(context, null);
@@ -76,6 +78,7 @@ public class TextPathView extends View {
         mTextPaint.setColor(mTextColor);
         mTextPaint.setTextSize(mTextSize);
         mTextPaint.setStyle(Paint.Style.STROKE);
+        mTextPaint.setStrokeWidth(mTextStrokeWidth);
      }
 
     @Override
@@ -84,9 +87,10 @@ public class TextPathView extends View {
 
 //        mTextProgressPath.reset();
         mTextPathMeasure.setPath(mTextPath, false);
-        float mTextPathMeasureLength = mTextPathMeasure.getLength();
-        mTextPathMeasure.getSegment(0, mTextPathMeasureLength, mTextProgressPath, false);
+//        float mTextPathMeasureLength = mTextPathMeasure.getLength();
+//        mTextPathMeasure.getSegment(0, mTextPathMeasureLength, mTextProgressPath, false);
 
+        calculateTextProgressPath();
         canvas.drawPath(mTextProgressPath, mTextPaint);
     }
 
@@ -100,5 +104,20 @@ public class TextPathView extends View {
         objectAnimator.setDuration(3000);
         objectAnimator.setInterpolator(new LinearInterpolator());
         objectAnimator.start();
+    }
+
+    private void calculateTextProgressPath() {
+        mStop = mTextLengthSum * progress;
+
+
+        while (mStop > mTextPathMeasure.getLength()) {
+            mStop -= mTextPathMeasure.getLength();
+            mTextPathMeasure.getSegment(0, mTextPathMeasure.getLength(), mTextProgressPath, true);
+
+            if (!mTextPathMeasure.nextContour()) {
+                break;
+            }
+        }
+        mTextPathMeasure.getSegment(0, mStop, mTextProgressPath, true);
     }
 }
