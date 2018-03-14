@@ -16,7 +16,7 @@ import android.view.animation.LinearInterpolator;
  * @author: houtrry
  * @date: 2018/3/13 20:06
  * @version: $Rev$
- * @description: https://juejin.im/post/5a9677b16fb9a063375765ad
+ * @description: 参考https://juejin.im/post/5a9677b16fb9a063375765ad
  */
 
 public class TextPathView extends View {

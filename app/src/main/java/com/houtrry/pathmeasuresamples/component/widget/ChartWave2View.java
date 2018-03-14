@@ -144,8 +144,7 @@ public class ChartWave2View extends View {
         mChartPathMeasure.setPath(mWaveBezierPath, false);
 
         mDstPath.reset();
-        mDstPath.moveTo(0, mOffsetY);
-        mChartPathMeasure.getSegment(0, mChartPathMeasure.getLength()*chartProgress, mDstPath, false);
+        mChartPathMeasure.getSegment(0, mChartPathMeasure.getLength()*chartProgress, mDstPath, true);
         canvas.drawPath(mDstPath, mChartPaint);
     }
 
