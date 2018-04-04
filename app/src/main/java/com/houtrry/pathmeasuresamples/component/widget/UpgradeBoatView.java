@@ -66,7 +66,7 @@ public class UpgradeBoatView extends View {
         mWidth = w;
         mHeight = h;
         mHalfWaveWidth = mWaveWidth * 0.5f;
-        mWaveCount = Double.valueOf(Math.ceil(mWidth / mWaveWidth * 1.0d)).intValue();
+        mWaveCount = Double.valueOf(Math.ceil(mWidth / mWaveWidth * 1.0d)).intValue() + 2;
     }
 
     @Override
@@ -120,7 +120,7 @@ public class UpgradeBoatView extends View {
         mOffsetX = -waveHorizontalProgress * mWaveWidth * 2;
         mWavePath.moveTo(mOffsetX, mOffsetY);
 
-        for (int i = 0; i < mWaveCount+2; i++) {
+        for (int i = 0; i < mWaveCount; i++) {
             mWavePath.rQuadTo(mHalfWaveWidth, (i % 2 == 0 ? 1 : -1) * mWaveHeight, mWaveWidth, 0);
         }
         mWavePath.lineTo(mWidth, mHeight);
