@@ -22,6 +22,8 @@
         </activity>
         <activity android:name=".component.activity.TextActivity">
         </activity>
+        <activity android:name=".component.activity.UpgradeBoatActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.sample_boat).setOnClickListener(this);
         findViewById(R.id.sample_chart).setOnClickListener(this);
         findViewById(R.id.sample_text).setOnClickListener(this);
+        findViewById(R.id.upgrade_boat).setOnClickListener(this);
 
     }
 
@@ -38,6 +39,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             case R.id.sample_text:{
                 toAty(TextActivity.class);
+                break;
+            }
+            case R.id.upgrade_boat:{
+                toAty(UpgradeBoatActivity.class);
                 break;
             }
             default:
