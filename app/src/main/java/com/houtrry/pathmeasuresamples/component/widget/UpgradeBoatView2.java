@@ -110,17 +110,15 @@ public class UpgradeBoatView2 extends View {
     }
 
     private void drawWave(Canvas canvas) {
-//        LogUtils.d("===>>>drawWave,,, start");
+        LogUtils.d("===>>>drawWave,,, start");
         canvas.drawPath(mWavePath, mWavePaint);
 
 
-//        LogUtils.d("===>>>drawWave, Region, isEmpty: "+mRegion.isEmpty()+", isComplex: "+mRegion.isComplex()+". isRect: "+mRegion.isRect());
-        System.out.println("===>>>drawWave, Region, isEmpty: "+mRegion.isEmpty()+", isComplex: "+mRegion.isComplex()+". isRect: "+mRegion.isRect());
+        LogUtils.d("===>>>drawWave, Region, isEmpty: "+mRegion.isEmpty()+", isComplex: "+mRegion.isComplex()+". isRect: "+mRegion.isRect());
         if (mRegion.isRect()) {
             mCurrentX = mRegion.getBounds();
         }
-//        LogUtils.d("===>>>drawWave,  rect: "+mCurrentX.right+", boatProgress: "+boatProgress);
-        System.out.println("===>>>drawWave,  rect: "+mCurrentX.right+", boatProgress: "+boatProgress);
+        LogUtils.d("===>>>drawWave,  rect: "+mCurrentX.right+", boatProgress: "+boatProgress);
         canvas.drawCircle(mCurrentX.right, mCurrentX.top, 20, mCirclePaint);
 
     }
