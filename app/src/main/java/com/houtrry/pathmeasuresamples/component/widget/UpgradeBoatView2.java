@@ -168,6 +168,6 @@ public class UpgradeBoatView2 extends View {
 
     public void setBoatProgress(float progress){
         boatProgress = progress;
-//        ViewCompat.postInvalidateOnAnimation(this);
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 }
