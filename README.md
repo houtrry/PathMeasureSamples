@@ -19,5 +19,13 @@
 
 
 
+## 补充效果
+![效果图](https://raw.githubusercontent.com/houtrry/PathMeasureSamples/master/img/gif4.gif)
+### 实现方法
+这个实现跟PathMeasure就没关系了。这需要用到另外一个类android.graphics.Region。  
+Region可以用来获取Path和既定Region相交部分的矩形区域。
+具体实现可以参见代码。
+
+
 
 
